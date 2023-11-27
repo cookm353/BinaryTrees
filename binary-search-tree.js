@@ -44,18 +44,26 @@ class BinarySearchTree {
   /** insertRecursively(val): insert a new node into the BST with value val.
    * Returns the tree. Uses recursion. */
 
-  insertRecursively(val, node=this.root) {
-    console.log(node)
-    if (!node) node = new Node(val)
-    else if (val < node.val) {
-      if (node.left) return this.insertRecursively(val, node.left)
-      // else node.left = new Node(val)
-    }
-    else if (val > node.val) {
-      if (node.right) return this.insertRecursively(val, node.right)
-      // else node.right = new Node(val)
-    }
-
+  insertRecursively(val) {
+    function insert(val, node) {
+      if (val < node.val) {
+          if (node.left) return insert(val, node.left)
+          else {
+              node.left = new Node(val)
+              return
+          }
+      }
+      else {
+          if (node.right) return insert(val, node.right)
+          else {
+              node.right = new Node(val)
+              return
+          }
+        }
+      }
+  
+    if (!this.root) this.root = new Node(val)
+    else insert(val, this.root)
     return this
   }
 
@@ -89,12 +97,13 @@ class BinarySearchTree {
 
   dfsPreOrder() {
     const nodesVisited = []
-    const toVisitStack = [this.root]
 
-    while (toVisitStack.length) {
-      break
+    function traverse(node, nodesVisited) {
+      nodesVisited.push(node.val)
+      if (node.left) traverse(node.left, nodesVisited)
+      if (node.right) traverse(node.right, nodesVisited)
     }
-
+    traverse(this.root, nodesVisited)
     return nodesVisited
   }
 
@@ -103,12 +112,13 @@ class BinarySearchTree {
 
   dfsInOrder() {
     const nodesVisited = []
-    const toVisitStack = [this.root]
 
-    while (toVisitStack.length) {
-      break
+    function traverse(node, nodesVisited) {
+      if (node.left) traverse(node.left, nodesVisited)
+      nodesVisited.push(node.val)
+      if (node.right) traverse(node.right, nodesVisited)
     }
-
+    traverse(this.root, nodesVisited)
     return nodesVisited
   }
 
@@ -117,12 +127,13 @@ class BinarySearchTree {
 
   dfsPostOrder() {
     const nodesVisited = []
-    const toVisitStack = [this.root]
 
-    while (toVisitStack.length) {
-      break
+    function traverse(node, nodesVisited) {
+      if (node.left) traverse(node.left, nodesVisited)
+      if (node.right) traverse(node.right, nodesVisited)
+      nodesVisited.push(node.val)
     }
-
+    traverse(this.root, nodesVisited)
     return nodesVisited
   }
 
